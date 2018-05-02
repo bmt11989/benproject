@@ -92,6 +92,8 @@ def upload_file():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    error = None
+
     if request.method == 'GET':
         return render_template('login.html')
     if request.method == 'POST':
@@ -99,9 +101,11 @@ def login():
         password = request.form['password']
         if check_credentials(username,password):
             session['logged_in'] = True
-            flash('You were successfully logged in')
-            return redirect('/list')
-        return redirect('/login')
+            flash('YAY')
+            return render_template('whatever.html')
+        else:
+            error ='BOO'
+    return render_template('login.html', error = error)
 
 def check_credentials(username,password):
     sql = "select username, password from user_credentials where username = '{}'".format(username)
