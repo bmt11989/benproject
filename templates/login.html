@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 </head>
 <body>
-$END$
+
+<nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">SecureShare Login</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+
+      </ul>
+    </div>
+
+
+</nav>
+{% if error %}
+      <p><strong>Error:</strong> {{ error }}
+      {% endif %}
+
+
+<form action="/login" method="post">
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" value="Login" name="submit">
+</form>
+
+
 </body>
+
+
+
+
+
+
+
 </html>
+

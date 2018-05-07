@@ -1,0 +1,47 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<ul>
+{% for file in files %}
+<li>
+
+<a href='/download/{{file}}'>{{file}}</a>
+
+</li>
+
+
+    {% endfor %}
+</ul>
+
+
+<ul>
+{% for folder in folders %}
+<li>
+
+<a href='/list/{{folder}}'>{{folder}}</a>
+
+</li>
+
+
+    {% endfor %}
+</ul>
+
+
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" style="float:right;" name="uploadfile">
+    <input type="button" class="button" style="float:right;" value="Upload File" name="submit">
+</form>
+
+
+</body>
+
+
+
+
+
+
+
+</html>
+
