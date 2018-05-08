@@ -1,8 +1,21 @@
 <html>
 <head>
 
+<style>
+input[type="submit"]{
+    background-color: #555;
+    color: #fff;
+    border-radius: 10px;
+}
+
+input[type="file"]{
+    background-color: #555;
+    color: #fff;
+    border-radius: 10px;
+}
+</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-    <title>Securehare</title>
+    <title>Storeecure</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 </head>
 <body>
@@ -24,7 +37,7 @@
 
 <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">SecureShare</a>
+      <a href="#" class="brand-logo">StoreSecure</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="/logout">logout</a></li>
 
@@ -38,7 +51,11 @@
             <a href="/list/{{folder}}" class="collection-item">{{folder}}</a>
         {%endfor%}
       </div>
-<form action="/upload" method="post" enctype="multipart/form-data">
+{% if error %}
+      <p><strong>Error:</strong> {{ error }}
+      {% endif %}
+
+      <form action="/upload" method="post" enctype="multipart/form-data">
     <input type="file" name="uploadfile">
     <input type="submit" value="upload" name="submit">
 </form>

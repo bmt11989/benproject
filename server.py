@@ -28,9 +28,25 @@ ALLOWED_EXTENSIONS = set(['jpg', 'wav', 'mp3', 'mp4', 'mov' , 'txt', 'doc', 'doc
 app.debug = True
 source_folder = r"C:\Users\Ben\benproject"
 
+@app.route('/list')
+def list_folderroot():
+    if session['logged_in'] !=  True:
+         return redirect('/login')
+    folder_contents = os.listdir(os.path.join(source_folder, directory))
+    filelist = []
+    folderslist = []
+    for i in folder_contents:
+        if os.path.isfile(os.path.join(source_folder, directory, i)) == True:
+            filelist.append(i)
+        elif os.path.isdir(os.path.join(source_folder, directory, i)) == True:
+            folderslist.append(i)
+
+    return render_template("index.html", files=filelist, folders=folderslist)
+
+
 @app.route('/list/<path:directory>')
 def list_folder(directory):
-    if session['logged_in'] == False:
+    if session['logged_in'] !=  True:
          return redirect('/login')
     folder_contents = os.listdir(os.path.join(source_folder, directory))
     filelist = []
@@ -48,10 +64,15 @@ def download(filename):
     return send_from_directory(source_folder,filename)
 
 @app.route('/delete/<path:filename>')
-def delete(filename):
-    if os.file.isfile(filename):
-        os.remove(filename)
-
+def delete(directory):
+    folder_contents = os.listdir(os.path.join(source_folder, directory))
+    filelist = []
+    folderslist = []
+    for i in folder_contents:
+        if os.path.isfile(os.path.join(source_folder, directory, i)) == True:
+            filelist.os.remove(i)
+        elif os.path.isdir(os.path.join(source_folder, directory, i)) == True:
+            folderslist.os.remove(i)
 
 
 @app.route('/upload', methods=['POST'])
@@ -63,7 +84,7 @@ def upload_file():
     if allowed_file(file.filename):
         print(file)
         file.save(os.path.join(source_folder, username, file.filename))
-        return redirect('/list' + username)
+        return redirect('/list/' + username)
     else:
         folder_contents = os.listdir(source_folder)
         filelist = []
@@ -73,12 +94,12 @@ def upload_file():
                 filelist.append(i)
             elif os.path.isdir(os.path.join(source_folder, i)) == True:
                 folderslist.append(i)
-        return redirect('/list' + username)
+        return redirect('/list/' + username)
 
 
 def allowed_file(filename):
     f = filename.split('.')
-    extension = f[-1]
+    extension = f[1]
     if extension in ALLOWED_EXTENSIONS:
         return True
     return False
@@ -104,15 +125,15 @@ def login():
 def check_credentials(username,password):
     sql = "select username, password from user_credentials where username = '{}'".format(username)
     result = execute_query(sql)
-    hp = hashpassword(password)
-    print(hashpassword(password))
+    hp = hash_password(password)
+    print(hash_password(password))
     if username == result[0] and hp == result[1]:
         return True
     return False
 
 
-def hashpassword(p):
-    h = hashlib.sha256(p.encode('utf-8') + salt.encode('utf-8'))
+def hash_password(password):
+    h = hashlib.sha256(password.encode('utf-8') + salt.encode('utf-8'))
     return h.hexdigest()
 
 @app.route('/logout', methods=['GET'])
@@ -122,8 +143,7 @@ def logout():
 
 
 if __name__ == "__main__":
-    #app.run()
-    context = ('securestore.crt', 'securestore.key')
-    app.run(host='127.0.0.1',port='443',
-        debug = True, ssl_context=context)
+#app.run()
+    context = ('C:\securestore.crt', 'C:\securestore.key')
+    app.run(host='127.0.0.1', port='5000', debug = True, ssl_context=context)
 
