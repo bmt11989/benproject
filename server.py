@@ -63,18 +63,6 @@ def list_folder(directory):
 def download(filename):
     return send_from_directory(source_folder,filename)
 
-@app.route('/delete/<path:filename>')
-def delete(directory):
-    folder_contents = os.listdir(os.path.join(source_folder, directory))
-    filelist = []
-    folderslist = []
-    for i in folder_contents:
-        if os.path.isfile(os.path.join(source_folder, directory, i)) == True:
-            filelist.os.remove(i)
-        elif os.path.isdir(os.path.join(source_folder, directory, i)) == True:
-            folderslist.os.remove(i)
-
-
 @app.route('/upload', methods=['POST'])
 def upload_file():
     username = session['username']
