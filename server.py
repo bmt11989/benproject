@@ -28,22 +28,6 @@ ALLOWED_EXTENSIONS = set(['jpg', 'wav', 'mp3', 'mp4', 'mov' , 'txt', 'doc', 'doc
 app.debug = True
 source_folder = r"C:\Users\Ben\benproject"
 
-@app.route('/list')
-def list_folderroot():
-    if session['logged_in'] !=  True:
-         return redirect('/login')
-    folder_contents = os.listdir(os.path.join(source_folder, directory))
-    filelist = []
-    folderslist = []
-    for i in folder_contents:
-        if os.path.isfile(os.path.join(source_folder, directory, i)) == True:
-            filelist.append(i)
-        elif os.path.isdir(os.path.join(source_folder, directory, i)) == True:
-            folderslist.append(i)
-
-    return render_template("index.html", files=filelist, folders=folderslist)
-
-
 @app.route('/list/<path:directory>')
 def list_folder(directory):
     if session['logged_in'] !=  True:
