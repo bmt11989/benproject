@@ -1,21 +1,14 @@
 
 import os
 from flask import Flask, render_template, send_from_directory, request, redirect, session
-
 import hashlib
-salt = "Glhk2!"
-
 import pymysql
-
-
 cnx = pymysql.connect(user='root', password='Cundis00!',
                                 host ='127.0.0.1',
                                 database='users_passwords')
-
 app = Flask(__name__)
 
 app.secret_key = 'admin'
-ALLOWED_EXTENSIONS = set(['jpg', 'wav', 'mp3', 'mp4', 'mov' , 'txt', 'doc', 'docx', 'pdf', 'ppt', 'pptx'])
 
 app.debug = True
 source_folder = r"C:\Users\Ben\benproject"
@@ -61,6 +54,8 @@ def upload_file():
         return redirect('/list/' + username)
 
 
+ALLOWED_EXTENSIONS = set(['jpg', 'wav', 'mp3', 'mp4', 'mov' , 'txt', 'doc', 'docx', 'pdf', 'ppt', 'pptx'])
+
 def allowed_file(filename):
     f = filename.split('.')
     extension = f[1]
@@ -86,6 +81,13 @@ def login():
             error ='Invalid credentials'
     return render_template('login.html', error = error)
 
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session['logged_in'] = False
+    return redirect ('/login')
+
+
 def check_credentials(username,password):
     sql = "select username, password from user_credentials where username = '{}'".format(username)
     result = execute_query(sql)
@@ -106,14 +108,10 @@ def hash_password(password):
     h = hashlib.sha256(password.encode('utf-8') + salt.encode('utf-8'))
     return h.hexdigest()
 
-@app.route('/logout', methods=['GET'])
-def logout():
-    session['logged_in'] = False
-    return redirect ('/login')
+salt = "Glhk2!"
 
 
 if __name__ == "__main__":
-#app.run()
     context = ('C:\securestore.crt', 'C:\securestore.key')
     app.run(host='127.0.0.1', port='5000', debug='True', ssl_context=context)
 
