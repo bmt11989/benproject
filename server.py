@@ -12,14 +12,6 @@ cnx = pymysql.connect(user='root', password='Cundis00!',
                                 host ='127.0.0.1',
                                 database='users_passwords')
 
-def execute_query(sql):
-    cursor = cnx.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    cursor.close()
-    return result
-
-
 app = Flask(__name__)
 
 app.secret_key = 'admin'
@@ -103,6 +95,12 @@ def check_credentials(username,password):
         return True
     return False
 
+def execute_query(sql):
+    cursor = cnx.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    cursor.close()
+    return result
 
 def hash_password(password):
     h = hashlib.sha256(password.encode('utf-8') + salt.encode('utf-8'))
@@ -117,5 +115,5 @@ def logout():
 if __name__ == "__main__":
 #app.run()
     context = ('C:\securestore.crt', 'C:\securestore.key')
-    app.run(host='127.0.0.1', port='5000', debug = True, ssl_context=context)
+    app.run(host='127.0.0.1', port='5000', debug='True', ssl_context=context)
 
